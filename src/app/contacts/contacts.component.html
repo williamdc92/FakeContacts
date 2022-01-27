@@ -1,0 +1,54 @@
+<div class="choice">
+<ion-button (click)="OrdName=false" (click)="OrdSurname=true" (click)="Reorder()">Order by surname(default)</ion-button> 
+<ion-button (click)="OrdName=true" (click)="OrdSurname=false" (click)="Reorder()">Order by Name</ion-button>  
+</div>
+
+
+<ion-button *ngIf="Edit==false" class="AButton" (click)="Add = true" color="success" [disabled]="Add">Add a new contact</ion-button>
+<ion-button class="AButton" *ngIf="Add" (click)="Add = false" color="danger">Undo</ion-button>
+
+<ion-item *ngIf="Add" >
+  <input [(ngModel)]='surname' placeholder="surname" />
+  <input [(ngModel)]='name' placeholder="name" />
+  <input [(ngModel)]='number' placeholder="number"/>
+
+  <ion-button color="success" [disabled]="surname=='' || name=='' || number=='' " (click)="push (surname,name,number)"  (click)="Add=false">Add</ion-button>
+  
+</ion-item>
+
+<ion-item *ngIf="Edit" >
+  <input [(ngModel)]='chosenObject.surname' placeholder="surname" />
+  <input [(ngModel)]='chosenObject.name' placeholder="name" />
+  <input [(ngModel)]='chosenObject.number' placeholder="number" />
+
+  <ion-button color="success" (click)="push (chosenObject.surname,chosenObject.name,chosenObject.number)" (click)="remove (OldChosenObject.surname,OldChosenObject.name,OldChosenObject.number)" (click)="Edit=false">Edit</ion-button>
+  <ion-button *ngIf="Edit" (click)="Edit = false" color="danger">Undo</ion-button>
+  
+</ion-item>
+
+<ion-list *ngIf="Edit==false">
+
+  <ion-list-header> Contacts : {{lenght}} </ion-list-header>
+
+  <ion-item-group *ngFor="let first of FirstLetter; let i = index">
+
+    <ion-item-divider>
+      <ion-label> {{first}} </ion-label>
+    </ion-item-divider>
+
+    <ion-item *ngFor="let contact of element(i)">
+
+      <ion-label><ion-item button (click)="Details = !Details">{{contact.surname}} {{contact.name}}</ion-item></ion-label>
+      <ion-label *ngIf="Details"> Number: {{contact.number}}</ion-label>
+      <ion-button *ngIf="Details" (click)="TakeValueOfElement(contact.surname,contact.name,contact.number) && Edit=true">Edit Contact</ion-button>
+      <ion-button *ngIf="Details" color="danger" (click)="remove(contact.surname,contact.name,contact.number)">Delete Contact</ion-button>
+      
+      
+      
+    </ion-item>
+  </ion-item-group>
+</ion-list>
+
+<ion-item-divider> </ion-item-divider>
+
+
